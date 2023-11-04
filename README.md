@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="coffe_logo.png" alt="coffe" width="70">
+  <img src="coffe_img.png" alt="coffe" width="70">
 <br>
 Federal University of Rio Grande - FURG
 Coffee Team - Sistema de Arquivos ☕ 
