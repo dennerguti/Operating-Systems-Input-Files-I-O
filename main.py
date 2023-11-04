@@ -4,8 +4,23 @@ import random
 class Dispositivo:
     def __init__(self, nome, uso_simultaneo, tempo_operacao):
         self.nome = nome
-        self.uso_simultaneo = uso_simultaneo
+        self.uso_simultaneo = uso_simultaneo  # Número máximo de usos simultâneos permitidos para este dispositivo
         self.tempo_operacao = tempo_operacao
+        self.fila = []  # Fila de processos que solicitaram este dispositivo
+
+    def solicitar(self, processo):
+        self.fila.append(processo)  # Adiciona o processo à fila do dispositivo
+        # Se o número de processos na fila for menor ou igual ao número de usos simultâneos permitidos,
+        # o processo pode usar o dispositivo imediatamente
+        if len(self.fila) <= self.uso_simultaneo:
+            return True
+        else:  # Caso contrário, o processo deve esperar
+            return False
+
+    def liberar(self):
+        if self.fila:
+            self.fila.pop(0)  # Remove o processo que terminou de usar o dispositivo da fila
+
 
 class Processo:
     def __init__(self, nome, tempo_execucao, chance_requisitar_ES):
@@ -13,6 +28,13 @@ class Processo:
         self.tempo_execucao = tempo_execucao
         self.chance_requisitar_ES = chance_requisitar_ES
         self.ponto_bloqueio = None
+        self.dispositivo_solicitado = None
+
+    def solicitar_dispositivo(self, dispositivo):
+        pode_usar_imediatamente = dispositivo.solicitar(self)  # Solicita o dispositivo
+        # Se o processo não puder usar o dispositivo imediatamente, armazena o dispositivo solicitado
+        if not pode_usar_imediatamente:
+            self.dispositivo_solicitado = dispositivo
 
 def ler_arquivo(nome_arquivo):
     with open(nome_arquivo, 'r') as arquivo:
@@ -46,6 +68,7 @@ def gerar_informacao_aleatoria(processo, dispositivos, unidade_tempo_atual):
     if chance <= processo.chance_requisitar_ES:
         tempo = random.randint(1, 9)
         dispositivo = random.choice(dispositivos)
+        processo.solicitar_dispositivo(dispositivo)
         processo.ponto_bloqueio = unidade_tempo_atual + tempo  
         return f"Chance | {chance} | Tempo | {tempo} | Dispositivo | {dispositivo.nome}", processo.ponto_bloqueio
     else:
