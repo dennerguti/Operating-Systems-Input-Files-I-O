@@ -51,7 +51,7 @@ def gerar_informacao_aleatoria(processo, dispositivos, unidade_tempo_atual):
     else:
         return f"Chance | {chance} (Não requisitou ES)", None
 
-def executar_processos(processos, dispositivos):
+def executar_processos(processos, dispositivos, tempo_escalonamento):
     processos_bloqueados = []
     unidade_tempo_atual = 0
     contador_global = 0
@@ -71,7 +71,7 @@ def executar_processos(processos, dispositivos):
             unidade_tempo_atual += 1
             contador_global += 1  
             tempo_execucao_atual += 1 
-            if contador_global == 10 or tempo_execucao_atual == 10:
+            if contador_global == tempo_escalonamento or tempo_execucao_atual == tempo_escalonamento:
                 break
         if processo_em_execucao.tempo_execucao > 0:
             processos.append(processo_em_execucao)
@@ -91,7 +91,7 @@ def main():
     linhas = ler_arquivo(nome_arquivo)
     dispositivos = processar_dispositivos(linhas)
     processos = processar_processos(linhas, len(dispositivos))
-    executar_processos(processos, dispositivos)
+    executar_processos(processos, dispositivos, 25)
     imprimir_informacoes_dispositivos(dispositivos)
 
 if __name__ == "__main__":
