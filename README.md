@@ -1,12 +1,13 @@
-# Sistema de Arquivos
-This project is to implement an i-node based file system. Your 256MB hard drive uses 4KB blocks. Each i-node stores file/directory details and access permissions. The system supports file and directory operations like creation, removal, content addition, reading, copying, renaming, and linking.
 <h1 align="center">
   <img src="coffe_logo.png" alt="coffe" width="70">
 <br>
-Coffee Team - Projeto escalonador ☕ 
+Federal University of Rio Grande - FURG
+Coffee Team - Sistema de Arquivos ☕ 
 </h1>
 
-<p>The objective of this work is to implement a file system based on i-nodes. To do this, consider the following information:
+<p> This project is to implement an i-node based file system. Your 256MB hard drive uses 4KB blocks. Each i-node stores file/directory details and access permissions. The system supports file and directory operations like creation, removal, content addition, reading, copying, renaming, and linking.
+  
+The objective of this work is to implement a file system based on i-nodes. To do this, consider the following information:
 
 Your hard drive has a capacity of 256 MB
 Data storage blocks are 4 KB
