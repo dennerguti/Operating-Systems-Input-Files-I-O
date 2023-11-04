@@ -1,7 +1,8 @@
 <h1 align="center">
   <img src="coffe_img.png" alt="coffe" width="70">
 <br>
-Federal University of Rio Grande - FURG
+Federal University of Rio Grande - FURG \n
+
 Coffee Team - Sistema de Arquivos ☕ 
 </h1>
 
