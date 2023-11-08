@@ -52,7 +52,7 @@ def processar_dispositivos(linhas):
         tempo_operacao = int(dispositivo_info[2])
         dispositivos.append(Dispositivo(nome_dispositivo, uso_simultaneo, tempo_operacao))
     return dispositivos
-
+ 
 def processar_algoritmo(linhas):
     info = linhas[0].strip().split('|')
     algoritmo_escalonamento = info[0]
