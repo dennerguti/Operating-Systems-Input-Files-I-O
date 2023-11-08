@@ -53,6 +53,13 @@ def processar_dispositivos(linhas):
         dispositivos.append(Dispositivo(nome_dispositivo, uso_simultaneo, tempo_operacao))
     return dispositivos
 
+def processar_algoritmo(linhas):
+    info = linhas[0].strip().split('|')
+    algoritmo_escalonamento = info[0]
+    fracao_CPU = int(info[1])
+
+    return algoritmo_escalonamento, fracao_CPU
+
 def processar_processos(linhas, numero_dispositivos):
     processos = []
     for linha in linhas[numero_dispositivos + 1:]:
@@ -63,10 +70,10 @@ def processar_processos(linhas, numero_dispositivos):
         processos.append(Processo(nome_processo, tempo_execucao, chance_requisitar_ES))
     return processos
 
-def gerar_informacao_aleatoria(processo, dispositivos, unidade_tempo_atual):
+def gerar_informacao_aleatoria(processo, dispositivos, unidade_tempo_atual, fracaoCPU):
     chance = random.randint(1, 100)
     if chance <= processo.chance_requisitar_ES:
-        tempo = random.randint(1, 9)
+        tempo = random.randint(1, fracaoCPU - 1)
         dispositivo = random.choice(dispositivos)
         processo.solicitar_dispositivo(dispositivo)
         processo.ponto_bloqueio = unidade_tempo_atual + tempo  
@@ -78,9 +85,11 @@ def executar_processos(processos, dispositivos, tempo_escalonamento):
     processos_bloqueados = []
     unidade_tempo_atual = 0
     contador_global = 0
+
     while processos:
         processo_em_execucao = processos.pop(0)
-        informacao_aleatoria, ponto_bloqueio = gerar_informacao_aleatoria(processo_em_execucao, dispositivos, unidade_tempo_atual)
+        informacao_aleatoria, ponto_bloqueio = gerar_informacao_aleatoria(processo_em_execucao, dispositivos, unidade_tempo_atual, tempo_escalonamento)
+
         if informacao_aleatoria:
             print(informacao_aleatoria)
             contador_global = 0 
@@ -94,6 +103,8 @@ def executar_processos(processos, dispositivos, tempo_escalonamento):
             unidade_tempo_atual += 1
             contador_global += 1  
             tempo_execucao_atual += 1 
+            #time.sleep(1)
+
             if contador_global == tempo_escalonamento or tempo_execucao_atual == tempo_escalonamento:
                 break
         if processo_em_execucao.tempo_execucao > 0:
@@ -114,8 +125,12 @@ def main():
     linhas = ler_arquivo(nome_arquivo)
     dispositivos = processar_dispositivos(linhas)
     processos = processar_processos(linhas, len(dispositivos))
-    executar_processos(processos, dispositivos, 25)
+    algoritmo_escalonamento, fracao_cpu = processar_algoritmo(linhas) 
+
+    print(f'{algoritmo_escalonamento} | {fracao_cpu} | {len(dispositivos)}')
+    executar_processos(processos, dispositivos, fracao_cpu)
     imprimir_informacoes_dispositivos(dispositivos)
+
 
 if __name__ == "__main__":
     main()
